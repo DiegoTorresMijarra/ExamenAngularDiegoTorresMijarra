@@ -1,0 +1,77 @@
+/* Estilos para el formulario */
+.container {
+  max-width: 800px;
+  margin: 0 auto;
+}
+
+h2,h3 {
+  text-align: center;
+  font-family: "Arial", sans-serif;
+  color: #5e78a8;
+  font-weight: bold;
+}
+#anadir {
+  width: 150px;
+  align-self: flex-end;
+}
+/* Espaciado entre elementos */
+.form-group {
+  margin-bottom: 20px;
+  padding: 10px;
+}
+
+/* Estilos para los campos de formulario */
+.mat-form-field {
+  width: 100%;
+}
+
+/* Estilos para los mensajes de error */
+.mat-error {
+  color: red;
+  font-size: 0.9em;
+}
+
+/* Estilos para los botones */
+.btn {
+  background-color: #007bff;
+  color: #fff;
+  padding: 10px 20px;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+.btn:hover {
+  background-color: #0056b3;
+}
+
+/* Estilos para la tabla de pedidos */
+.table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.table th, .table td {
+  padding: 8px;
+  border-bottom: 1px solid #dee2e6;
+}
+
+.table th {
+  background-color: #f8f9fa;
+  font-weight: bold;
+  text-align: left;
+}
+
+/* Estilos para los botones de acción en la tabla */
+.table button {
+  background-color: #dc3545;
+  color: #fff;
+  padding: 5px 10px;
+  border: none;
+  border-radius: 3px;
+  cursor: pointer;
+}
+
+.table button:hover {
+  background-color: #c82333;
+}

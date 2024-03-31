@@ -1,0 +1,213 @@
+<div class="container mt-5">
+  <form id="formularioEnvio" (submit)="onSubmit()" [formGroup]="formularioEnvio" onsubmit="false">
+    <div class="container mt-5" id="datosCliente">
+      <h2>Formulario de Envíos Internacionales</h2>
+      <br>
+      <div class="form-group">
+        <!-- Fecha-->
+        <mat-form-field appearance="outline" class="form-field">
+          <mat-label>Fecha</mat-label>
+          <input matInput placeholder="{{fechaHoy}}" formControlName="fecha" >
+          <mat-error *ngIf="formularioEnvio.get('fecha')?.invalid && (formularioEnvio.get('fecha')?.dirty || formularioEnvio.get('fecha')?.touched)">
+            <span *ngIf="formularioEnvio.get('fecha')?.errors?.['required']">La fecha es requerida </span>
+            <span *ngIf="formularioEnvio.get('fecha')?.errors?.['invalidDate_WrongM']">El mes de la fecha es inválido</span>
+            <span *ngIf="formularioEnvio.get('fecha')?.errors?.['invalidDate_WrongD']">El día de la fecha es inválido</span>
+            <span *ngIf="formularioEnvio.get('fecha')?.errors?.['invalidDate_WrongY']">El año de la fecha es inválido</span>
+            <span *ngIf="formularioEnvio.get('fecha')?.errors?.['invalidDate_NotNumber']">La fecha debe ser una valida</span>
+            <span *ngIf="formularioEnvio.get('fecha')?.errors?.['invalidDate_PastDate']">La fecha no puede ser anterior a la fecha actual.</span>
+
+          </mat-error>
+        </mat-form-field>
+
+        <!-- Empresa -->
+        <mat-form-field appearance="outline" class="form-field">
+          <mat-label>Empresa</mat-label>
+          <input matInput formControlName="empresa" placeholder="Nombre Empresa">
+          <mat-error *ngIf="formularioEnvio.get('fecha')?.invalid && (formularioEnvio.get('empresa')?.dirty || formularioEnvio.get('empresa')?.touched)">
+            <span *ngIf="formularioEnvio.get('empresa')?.errors?.['required']">La empresa es requerida</span>
+            <span *ngIf="formularioEnvio.get('empresa')?.errors?.['minlength']">La empresa debe tener minimo 2 caracteres</span>
+            <span *ngIf="formularioEnvio.get('empresa')?.errors?.['maxlength']">La empresa debe tener maximo 100 caracteres</span>
+          </mat-error>
+        </mat-form-field>
+
+        <!-- Email -->
+        <mat-form-field appearance="outline" class="form-field">
+          <mat-label>Email</mat-label>
+          <input matInput placeholder="aa@aa.com" formControlName="email">
+          <mat-error *ngIf="formularioEnvio.get('email')?.hasError('required')">
+            Email es requerido
+          </mat-error>
+          <mat-error *ngIf="formularioEnvio.get('email')?.hasError('email')">
+            Email no válido
+          </mat-error>
+        </mat-form-field>
+
+        <!-- Instagram -->
+        <mat-form-field appearance="outline" class="form-field">
+          <mat-label>Instagram</mat-label>
+          <input matInput formControlName="instagram">
+          <mat-error *ngIf="formularioEnvio.get('instagram')?.errors">
+            <span *ngIf="formularioEnvio.get('instagram')?.hasError('required')">Instagram es requerido </span>
+            <span *ngIf="formularioEnvio.get('instagram')?.hasError('noArroba')">El instagram debe empezar por &commat;</span>
+            <span *ngIf="formularioEnvio.get('instagram')?.hasError('invalidLenght')">El instagram debe tener entre 2 y 20 caracteres</span>
+          </mat-error>
+        </mat-form-field>
+
+        <!-- Cliente -->
+        <div>
+          <mat-checkbox  class="form-check" formControlName="clienteCheckbox">Cliente: </mat-checkbox>
+          <mat-form-field formControlName="cliente" appearance="outline">
+            <mat-label>Origen</mat-label>
+            <select matNativeControl  [disabled]="!formularioEnvio.get('clienteCheckbox')?.value">
+              <option>Seleccione una opcion</option>
+              <option value="prensa">Prensa</option>
+              <option value="redes"> Redes</option>
+              <option value="amigos"> Amigos</option>
+            </select>
+          </mat-form-field>
+        </div>
+
+
+        <!-- Destino -->
+        <div>
+          <mat-radio-group aria-label="Destino" formControlName="destino" >
+            <mat-radio-button value="nacional">Nacional</mat-radio-button>
+            <mat-radio-button value="extranjero">Extranjero </mat-radio-button>
+          </mat-radio-group>
+
+          <mat-form-field appearance="outline" class="form-field" *ngIf="formularioEnvio.get('destino')?.value==='extranjero'">
+            <mat-label>Pais: </mat-label>
+            <input matInput formControlName="pais">
+            <mat-error *ngIf="formularioEnvio.get('pais')?.hasError('required')">
+              El país es requerido.
+            </mat-error>
+            <mat-error *ngIf="formularioEnvio.get('pais')?.hasError('minlength')">
+              El país debe tener al menos 2 caracteres.
+            </mat-error>
+            <mat-error *ngIf="formularioEnvio.get('pais')?.hasError('maxlength')">
+              El país no puede tener más de 50 caracteres.
+            </mat-error>
+          </mat-form-field>
+        </div>
+        <button type="submit" class="btn btn-primary">ENVIAR</button>
+      </div>
+    </div>
+  </form>
+  <hr>
+  <!-- Realizador de pedidos -->
+  <div class="container mt-5">
+    <h3> Envios </h3>
+    <hr>
+    <form class="row" (submit)="anadirPedido()" [formGroup]="formularioPedido" onsubmit="false">
+      <div class="col">
+        <mat-form-field   appearance="outline" class="form-field">
+          <mat-label>Destino</mat-label>
+          <select matNativeControl formControlName="destinoEnvio">
+            <option value="espana">España</option>
+            <option value="europa"> Europa</option>
+            <option value="america"> America</option>
+          </select>
+        </mat-form-field>
+      </div>
+      <div class="col">
+        <mat-form-field  appearance="outline" class="form-field">
+          <mat-label>Peso (kg)</mat-label>
+          <input matInput placeholder="nn.nn" formControlName="peso">
+
+          <mat-error *ngIf="formularioPedido.get('peso')?.hasError('required')">
+            El peso es requerido.
+          </mat-error>
+          <mat-error *ngIf="formularioPedido.get('peso')?.hasError('invalidFormat')">
+            El peso debe tener el formato correcto (nn.nn).
+          </mat-error>
+          <mat-error *ngIf="formularioPedido.get('peso')?.hasError('invalidMax')">
+            El peso no puede ser mayor de 3.00.
+          </mat-error>
+        </mat-form-field>
+      </div>
+      <div class="col">
+        <mat-form-field appearance="outline" class="form-field">
+          <mat-label>Tipo Envio</mat-label>
+          <select matNativeControl formControlName="tipoEnvio">
+            <option value="certificado">Certificado</option>
+            <option value="paquete">Paquete</option>
+          </select>
+        </mat-form-field>
+      </div>
+      <div class="col">
+        <mat-form-field appearance="outline" class="form-field" floatLabel="always">
+          <mat-label>Precio</mat-label>
+          <input matInput formControlName="fecha" readonly value="{{precioLineaEnvio}}">
+        </mat-form-field>
+      </div>
+      <button id="anadir" type="button" class="btn btn-warning" (click)="anadirPedido()">Añadir</button>
+    </form>
+  </div>
+
+  <!-- Linea de pedidos -->
+  <div class="container mt-5 text-center" id="lineaEnvios">
+    <h3 class="text-start">Linea de envios:</h3>
+    <hr>
+    <table class="table">
+      <thead>
+      <tr>
+        <th>Destino</th>
+        <th>Peso (kg)</th>
+        <th>Tipo de Envío</th>
+        <th>Precio (€)</th>
+        <th></th>
+      </tr>
+      </thead>
+      <tbody id="tablaEnvios">
+        <tr *ngFor="let pedido of pedidos; let i = index">
+          <td>{{ pedido.destino }}</td>
+          <td>{{ pedido.peso }}</td>
+          <td>{{ pedido.tipoEnvio }}</td>
+          <td>{{ pedido.precio }}</td>
+          <td><button (click)="eliminarPedido(i)">Eliminar</button></td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+  <div class="container mt-5" id="lineaTotales">
+    <h3 class="text-start">Totales:</h3>
+    <hr>
+    <div class="row text-center">
+      <div class="col">
+        <div class="row">
+          <div class="col">
+            <strong>Total de Envíos</strong>
+          </div>
+          <div class="col">
+            <strong>Peso Total (kg)</strong>
+          </div>
+          <div class="col">
+            <strong>Importe a España (€)</strong>
+          </div>
+          <div class="col">
+            <strong>Importe a Europa (€)</strong>
+          </div>
+          <div class="col">
+            <strong>Importe a América (€)</strong>
+          </div>
+          <div class="col">
+            <strong>Total de Importes (€)</strong>
+          </div>
+        </div>
+        <!-- Contenido del Resumen -->
+        <div id="resumenBody">
+          <div class="row">
+            <div class="col" id="totalEnvios">{{pedidos.length}}</div>
+            <div class="col" id="pesoTotal">{{totalPeso}}</div>
+            <div class="col" id="importeEspaña">{{totalEspana}}</div>
+            <div class="col" id="importeEuropa">{{totalEuropa}}</div>
+            <div class="col" id="importeAmerica">{{totalAmerica}}</div>
+            <div class="col" id="totalImportes">{{totalTotales}}</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+  <br>
+</div>
